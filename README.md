@@ -21,13 +21,11 @@ That is the whole point of the speed limit. The answers still get written. They 
 
 ## What you get in this folder
 
-`langgraph_fanout.py` is the Python example. It uses LangGraph. Each question becomes one assistant.
+This folder is the Python starter. `langgraph_fanout.py` uses LangGraph. Each question becomes one assistant.
 
-`fanout.ts` is the same job in TypeScript. Five assistants at a time, and the same speed limit on the next batch. Use this file when your team writes TypeScript.
+The assistant in the file is a stand-in: it writes a sentence that includes the question. It does not call a paid model. The job is still registered on [graphingest.io](https://www.graphingest.io), so you can watch the shape before you spend money.
 
-In both files the assistant is a stand-in: it writes a sentence that includes the question. It does not call a paid model. The job is still registered on [graphingest.io](https://www.graphingest.io), so you can watch the shape before you spend money.
-
-When you are ready to spend money on real answers, replace the stand-in with your model. In the Python file that is the `reason` step. In the TypeScript file that is the body of `researcher`. The fan-out and the speed limits stay as they are. You do not rebuild the queue. How those pieces fit is also covered in the [docs](https://www.graphingest.io/docs).
+When you are ready to spend money on real answers, replace the `reason` step with your model. The fan-out and the speed limits stay as they are. You do not rebuild the queue. How those pieces fit is also covered in the [docs](https://www.graphingest.io/docs).
 
 Keep the stand-in while you are learning the shape of the job. Switch to a real model only when the list of questions and the limits look right on [the dashboard](https://www.graphingest.io/dashboard).
 
@@ -38,20 +36,11 @@ Keep the stand-in while you are learning the shape of the job. Switch to a real 
 
 ## How to run it
 
-Python, with LangGraph:
-
 ```bash
 pip install -r requirements.txt
 python langgraph_fanout.py
 ```
 
-TypeScript, same fan-out and same speed limit:
+The script registers the job on [graphingest.io](https://www.graphingest.io), then asks three sample questions. Open [the dashboard](https://www.graphingest.io/dashboard) and you will see one run, with one task per question. A question that fails can be tried again on its own. The questions that already succeeded stay finished.
 
-```bash
-npm install
-npm run deploy
-```
-
-Either script registers the job on [graphingest.io](https://www.graphingest.io), then asks three sample questions. Open [the dashboard](https://www.graphingest.io/dashboard) and you will see one run, with one task per question. A question that fails can be tried again on its own. The questions that already succeeded stay finished.
-
-Change the list at the bottom of the file you ran to your own questions. Change `width = 5` in that same file if you want a different number of assistants in flight inside a single batch. The two policies near the top of the graph are the limits on the next batch: how often a new batch may start, and how many batches may run together. After the next run, those limits show up again on [graphingest.io/runs](https://www.graphingest.io/runs).
+Change the list at the bottom of `langgraph_fanout.py` to your own questions. Change `width = 5` if you want a different number of assistants in flight inside a single batch. The two policies near the top of the graph are the limits on the next batch: how often a new batch may start, and how many batches may run together. After the next run, those limits show up again on [graphingest.io/runs](https://www.graphingest.io/runs).
