@@ -1,0 +1,14 @@
+{
+  "name": "langgraph-fanout",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "tsx fanout.ts"
+  },
+  "dependencies": {
+    "graphingest": "*"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.0"
+  }
+}
